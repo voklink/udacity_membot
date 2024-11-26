@@ -38,12 +38,93 @@ ChatBot::~ChatBot()
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
         delete _image;
+    
         _image = NULL;
     }
 }
 
 //// STUDENT CODE
 ////
+// Implementing the Rule of Five
+
+// Copy Constructor
+// srcObject is const as it is not being changed
+ChatBot::ChatBot(const ChatBot& srcObject)
+{
+    std::cout << "ChatBot Copy Constructor" << "\n";
+    
+    // Allocating a NEW heap by directly copying the old image
+    _image = new wxBitmap(*srcObject._image);
+
+    // Now copying each attribute/member one by one from the srcObj to our new obj.
+    _currentNode    = srcObject._currentNode;
+    _rootNode       = srcObject._rootNode;
+    _chatLogic      = srcObject._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+}
+
+// Copy Assignment Operator
+ChatBot& ChatBot::operator=(const ChatBot& srcObject)
+{
+    std::cout << "ChatBot Copy Assignment Operator" << "\n";
+    // Safety check, if object is copy-assigned to itself
+    if (this == &srcObject)
+    {
+        return *this;
+    }
+
+    // Now, just like in the CopyConstructor, copy each variable one by one
+    _image          = new wxBitmap(*srcObject._image);
+    _currentNode    = srcObject._currentNode;
+    _rootNode       = srcObject._rootNode;
+    _chatLogic      = srcObject._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+    return *this;
+}
+
+// Move Constructor
+// srcObject is not CONST as we reset it after the move
+// so first, we copy, then we reset the srcObj
+ChatBot::ChatBot(ChatBot&& srcObject)
+{
+    std::cout << "ChatBot Move Constructor" << "\n";
+    
+    _image          = new wxBitmap(*srcObject._image);
+    _currentNode    = srcObject._currentNode;
+    _rootNode       = srcObject._rootNode;
+    _chatLogic      = srcObject._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+
+    srcObject._image          = nullptr;
+    srcObject._currentNode    = nullptr;
+    srcObject._rootNode       = nullptr;
+    srcObject._chatLogic      = nullptr;
+}
+
+// Move Assignment Operator
+// srcObject is not CONST as we reset it after the move
+// so first, we copy, then we reset the srcObj
+ChatBot& ChatBot::operator=(ChatBot&& srcObject)  
+{
+    std::cout << "ChatBot Move Assignment Operator" << "\n";
+    // Safety check, if object is copy-assigned to itself
+    if (this == &srcObject)
+    {
+        return *this;
+    }
+    
+    _image          = new wxBitmap(*srcObject._image);
+    _currentNode    = srcObject._currentNode;
+    _rootNode       = srcObject._rootNode;
+    _chatLogic      = srcObject._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+
+    srcObject._image          = nullptr;
+    srcObject._currentNode    = nullptr;
+    srcObject._rootNode       = nullptr;
+    srcObject._chatLogic      = nullptr;
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
