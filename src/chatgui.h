@@ -1,7 +1,13 @@
 #ifndef CHATGUI_H_
 #define CHATGUI_H_
 
+#include <memory>
 #include <wx/wx.h>
+
+#define myDEBUG(X) std::cout << (#X) << "= " << (X) << std::endl;
+#define myPRINT(X) std::cout << (X) << std::endl;
+#define myPRINT2(X,Y) std::cout << (X) << "  " << (Y) << std::endl;
+#define myFUNC std::cout << "\n-------" << __func__ << "-------" << std::endl;
 
 class ChatLogic; // forward declaration
 
@@ -16,7 +22,9 @@ private:
     //// STUDENT CODE
     ////
 
-    ChatLogic *_chatLogic;
+    // Making chatLogi a UNIQUE_PTR instead of a raw pointer
+    // ChatLogic *_chatLogic;
+    std::unique_ptr<ChatLogic> _chatLogic;
 
     ////
     //// EOF STUDENT CODE
@@ -27,7 +35,8 @@ public:
     ~ChatBotPanelDialog();
 
     // getter / setter
-    ChatLogic *GetChatLogicHandle() { return _chatLogic; }
+    // Now, return does not return _chatLogic directly as this would violate it being a uniquePtr, but we return its handle (Ptr?)
+    ChatLogic *GetChatLogicHandle() { return _chatLogic.get(); }
 
     // events
     void paintEvent(wxPaintEvent &evt);

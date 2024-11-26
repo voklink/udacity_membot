@@ -1,3 +1,4 @@
+#include <memory>
 #include <wx/filename.h>
 #include <wx/colour.h>
 #include <wx/image.h>
@@ -9,6 +10,12 @@
 // size of chatbot window
 const int width = 414;
 const int height = 736;
+
+#define myDEBUG(X) std::cout << (#X) << "= " << (X) << std::endl;
+#define myPRINT(X) std::cout << (X) << std::endl;
+#define myPRINT2(X,Y) std::cout << (X) << "  " << (Y) << std::endl;
+#define myFUNC std::cout << "\n-------" << __func__ << "-------" << std::endl;
+
 
 // wxWidgets APP
 IMPLEMENT_APP(ChatBotApp);
@@ -107,6 +114,7 @@ END_EVENT_TABLE()
 ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     : wxScrolledWindow(parent, id)
 {
+    myFUNC;
     // sizer will take care of determining the needed scroll size
     _dialogSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(_dialogSizer);
@@ -118,7 +126,9 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     ////
 
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
+    // but now using make_unique.
+    // _chatLogic = new ChatLogic();
+    _chatLogic = std::make_unique<ChatLogic>();
 
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
@@ -135,7 +145,8 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
     //// STUDENT CODE
     ////
 
-    delete _chatLogic;
+    // Freeing the memory is now handled by the unique_Ptr, so no more need for "delete"
+    // delete _chatLogic;
 
     ////
     //// EOF STUDENT CODE
