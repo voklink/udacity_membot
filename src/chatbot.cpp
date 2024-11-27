@@ -65,10 +65,10 @@ ChatBot::ChatBot(const ChatBot& srcObject)
     // Or can I copy this directly??? wxBitmap should have its own CopyConstructor/Assignment
     // in the construcor NEW is used (if an image is given...)
     // so maybe I have to do that here too!
-    // _image = new wxBitmap(*srcObject._image);
+    _image = new wxBitmap(*srcObject._image);
 
     // Now copying each attribute/member one by one from the srcObj to our new obj.
-    _image          = srcObject._image;
+    // _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
@@ -86,8 +86,8 @@ ChatBot& ChatBot::operator=(const ChatBot& srcObject)
     }
 
     // Now, just like in the CopyConstructor, copy each variable one by one
-    // _image          = new wxBitmap(*srcObject._image);
-    _image          = srcObject._image;
+    _image          = new wxBitmap(*srcObject._image);
+    // _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
