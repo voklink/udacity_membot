@@ -11,6 +11,7 @@
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
 {
+    std::cout << "ChatBot constructed: " << this << std::endl;
     // invalidate data handles
     _image = nullptr;
     _chatLogic = nullptr;
@@ -20,7 +21,7 @@ ChatBot::ChatBot()
 // constructor WITH memory allocation
 ChatBot::ChatBot(std::string filename)
 {
-    std::cout << "ChatBot Constructor" << std::endl;
+    std::cout << "ChatBot constructed: " << this << std::endl;
     
     // invalidate data handles
     _chatLogic = nullptr;
@@ -32,12 +33,12 @@ ChatBot::ChatBot(std::string filename)
 
 ChatBot::~ChatBot()
 {
-    std::cout << "ChatBot Destructor" << std::endl;
+    std::cout << "    ChatBot destroyed: " << this << std::endl;
 
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
-        delete _image;
+        //delete _image;
     
         _image = NULL;
     }
@@ -58,7 +59,7 @@ ChatBot::~ChatBot()
 // srcObject is const as it is not being changed
 ChatBot::ChatBot(const ChatBot& srcObject)
 {
-    std::cout << "ChatBot Copy Constructor" << "\n";
+    std::cout << "Chatbot copied (constr) from" << &srcObject << " to " << this  << "\n";
     
     // Allocating a NEW heap by directly copying the old image
     // Or can I copy this directly??? wxBitmap should have its own CopyConstructor/Assignment
@@ -77,7 +78,7 @@ ChatBot::ChatBot(const ChatBot& srcObject)
 // Copy Assignment Operator
 ChatBot& ChatBot::operator=(const ChatBot& srcObject)
 {
-    std::cout << "ChatBot Copy Assignment Operator" << "\n";
+    std::cout << "Chatbot copied (assign) from " << &srcObject << " to " << this << "\n";
     // Safety check, if object is copy-assigned to itself
     if (this == &srcObject)
     {
@@ -99,7 +100,7 @@ ChatBot& ChatBot::operator=(const ChatBot& srcObject)
 // so first, we copy, then we reset the srcObj
 ChatBot::ChatBot(ChatBot&& srcObject)
 {
-    std::cout << "ChatBot Move Constructor" << "\n";
+    std::cout << "ChatBot moved (constr) from " << &srcObject << " to " << this << "\n";
     
     // _image          = new wxBitmap(*srcObject._image);
     _image          = srcObject._image;
@@ -119,7 +120,7 @@ ChatBot::ChatBot(ChatBot&& srcObject)
 // so first, we copy, then we reset the srcObj
 ChatBot& ChatBot::operator=(ChatBot&& srcObject)  
 {
-    std::cout << "ChatBot Move Assignment Operator" << "\n";
+    std::cout << "Chatbot moved (assign) from " << &srcObject << " to " << this << "\n";
     // Safety check, if object is copy-assigned to itself
     if (this == &srcObject)
     {

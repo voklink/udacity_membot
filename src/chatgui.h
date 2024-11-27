@@ -4,11 +4,6 @@
 #include <memory>
 #include <wx/wx.h>
 
-#define myDEBUG(X) std::cout << (#X) << "= " << (X) << std::endl;
-#define myPRINT(X) std::cout << (X) << std::endl;
-#define myPRINT2(X,Y) std::cout << (X) << "  " << (Y) << std::endl;
-#define myFUNC std::cout << "\n-------" << __func__ << "-------" << std::endl;
-
 class ChatLogic; // forward declaration
 
 // middle part of the window containing the dialog between user and chatbot

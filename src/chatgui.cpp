@@ -11,12 +11,6 @@
 const int width = 414;
 const int height = 736;
 
-#define myDEBUG(X) std::cout << (#X) << "= " << (X) << std::endl;
-#define myPRINT(X) std::cout << (X) << std::endl;
-#define myPRINT2(X,Y) std::cout << (X) << "  " << (Y) << std::endl;
-#define myFUNC std::cout << "\n-------" << __func__ << "-------" << std::endl;
-
-
 // wxWidgets APP
 IMPLEMENT_APP(ChatBotApp);
 
@@ -114,7 +108,6 @@ END_EVENT_TABLE()
 ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     : wxScrolledWindow(parent, id)
 {
-    myFUNC;
     // sizer will take care of determining the needed scroll size
     _dialogSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(_dialogSizer);
