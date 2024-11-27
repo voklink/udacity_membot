@@ -47,6 +47,13 @@ ChatBot::~ChatBot()
 ////
 // Implementing the Rule of Five
 
+// TODO:
+// In the MOVE operations:
+// Do you have to "delete" _image (target) first?? Like in the example 5.3?
+// and then allocate fresh memory via NEW? Then you would have to actually move all the data
+// instead of just passing on the ownership.
+// Or does wxBitmap already its won RuleOfFive which allocates the correct memory? 
+
 // Copy Constructor
 // srcObject is const as it is not being changed
 ChatBot::ChatBot(const ChatBot& srcObject)
@@ -54,9 +61,13 @@ ChatBot::ChatBot(const ChatBot& srcObject)
     std::cout << "ChatBot Copy Constructor" << "\n";
     
     // Allocating a NEW heap by directly copying the old image
-    _image = new wxBitmap(*srcObject._image);
+    // Or can I copy this directly??? wxBitmap should have its own CopyConstructor/Assignment
+    // in the construcor NEW is used (if an image is given...)
+    // so maybe I have to do that here too!
+    // _image = new wxBitmap(*srcObject._image);
 
     // Now copying each attribute/member one by one from the srcObj to our new obj.
+    _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
@@ -74,7 +85,8 @@ ChatBot& ChatBot::operator=(const ChatBot& srcObject)
     }
 
     // Now, just like in the CopyConstructor, copy each variable one by one
-    _image          = new wxBitmap(*srcObject._image);
+    // _image          = new wxBitmap(*srcObject._image);
+    _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
@@ -89,13 +101,14 @@ ChatBot::ChatBot(ChatBot&& srcObject)
 {
     std::cout << "ChatBot Move Constructor" << "\n";
     
-    _image          = new wxBitmap(*srcObject._image);
+    // _image          = new wxBitmap(*srcObject._image);
+    _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
     _chatLogic->SetChatbotHandle(this);
 
-    srcObject._image          = nullptr;
+    srcObject._image          = NULL;
     srcObject._currentNode    = nullptr;
     srcObject._rootNode       = nullptr;
     srcObject._chatLogic      = nullptr;
@@ -113,13 +126,14 @@ ChatBot& ChatBot::operator=(ChatBot&& srcObject)
         return *this;
     }
     
-    _image          = new wxBitmap(*srcObject._image);
+    // _image          = new wxBitmap(*srcObject._image);
+    _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
     _chatLogic->SetChatbotHandle(this);
 
-    srcObject._image          = nullptr;
+    srcObject._image          = NULL;
     srcObject._currentNode    = nullptr;
     srcObject._rootNode       = nullptr;
     srcObject._chatLogic      = nullptr;
