@@ -38,8 +38,7 @@ ChatBot::~ChatBot()
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
-        //delete _image;
-    
+        delete _image;
         _image = NULL;
     }
 }
@@ -61,14 +60,15 @@ ChatBot::ChatBot(const ChatBot& srcObject)
 {
     std::cout << "Chatbot copied (constr) from" << &srcObject << " to " << this  << "\n";
     
-    // Allocating a NEW heap by directly copying the old image
-    // Or can I copy this directly??? wxBitmap should have its own CopyConstructor/Assignment
-    // in the construcor NEW is used (if an image is given...)
-    // so maybe I have to do that here too!
+    // If _image already points to allocated memory, this results in a memory leak because the old bitmap is not deallocated.
+    if (_image != nullptr) 
+    {
+        delete _image;
+    }
+    // Here, new heap memory is allocated
     _image = new wxBitmap(*srcObject._image);
 
     // Now copying each attribute/member one by one from the srcObj to our new obj.
-    // _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
@@ -85,9 +85,13 @@ ChatBot& ChatBot::operator=(const ChatBot& srcObject)
         return *this;
     }
 
+    if (_image != nullptr) 
+    {
+        delete _image;
+    }
+    _image          = new wxBitmap(*srcObject._image);  // Here, new heap memory is allocated
+
     // Now, just like in the CopyConstructor, copy each variable one by one
-    _image          = new wxBitmap(*srcObject._image);
-    // _image          = srcObject._image;
     _currentNode    = srcObject._currentNode;
     _rootNode       = srcObject._rootNode;
     _chatLogic      = srcObject._chatLogic;
